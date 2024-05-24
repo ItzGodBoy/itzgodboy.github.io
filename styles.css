@@ -1,6 +1,6 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f0f0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,10 +13,11 @@ body {
     align-items: center;
     background: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
     width: 100%;
+    animation: fadeIn 2s ease-in-out;
 }
 
 .text-content {
@@ -25,7 +26,7 @@ body {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     color: #333;
     margin-bottom: 10px;
 }
@@ -36,6 +37,13 @@ p {
     margin: 5px 0;
 }
 
+.school-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+    animation: logoAnimation 3s infinite;
+}
+
 .image-container {
     flex: 1;
     display: flex;
@@ -44,8 +52,8 @@ p {
 }
 
 .image-container img {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     border: 5px solid #333;
     animation: custom-animation 5s infinite;
@@ -63,5 +71,23 @@ p {
     }
     75% {
         transform: rotate(10deg) scale(1.1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes logoAnimation {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
     }
 }
