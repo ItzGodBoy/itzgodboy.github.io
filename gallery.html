@@ -3,10 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            flex: 1 0 21%; /* Adjust the percentage to change the number of images per row */
+            box-sizing: border-box;
+            margin: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
-    <p>This is the content of the home page.</p>
+    <h1>Photo Gallery</h1>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/445782305_1465654384048699_6238661773395629764_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=S1iMawlUGiEQ7kNvgH7wHkv&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QHtN-Z24y9Lm9YKVwD2_Tg-3BPtYiP1w-01w3XYIrs5XA&oe=6682D385" alt="Photo 1">
+        </div>
+        <div class="gallery-item">
+            <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/442420937_404390702588658_4164341456968462343_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=jILlIeYmFFkQ7kNvgE8TmIa&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QF48AL98BdOsP2KyY4ZVHcsk7mQGzohdwS4ZfCd-_ZWoA&oe=6682D925" alt="Photo 2">
+        </div>
+        <div class="gallery-item">
+            <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/445943098_1120571972569070_3158618832651115018_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_ohc=tJzB1rmmIiwQ7kNvgFvgm6P&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QE_obD6YbeFlgsve4GNIYDGe33hiH4ZklTAsNOLdVybfg&oe=6682D9D6" alt="Photo 3">
+        </div>
+        <div class="gallery-item">
+            <img src="https://scontent.xx.fbcdn.net/v/t1.15752-9/442484175_2625106891002545_3587618953122791935_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_ohc=s9JzYdaeeRIQ7kNvgF2uniT&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QH_tK5sBuu7o8_QxaCAopAwL7tcZFbvkz2C5VWlvqG60Q&oe=6682DFF1" alt="Photo 4">
+        </div>
+    </div>
 </body>
 </html>
