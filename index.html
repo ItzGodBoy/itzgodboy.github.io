@@ -4,24 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Suman</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #282c34;
+            color: #ffffff;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .nav-bar {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-bar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-bar a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+
+        .text-content {
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .school-logo {
+            max-width: 100px;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .image-container img {
+            max-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        .glow-text {
+            font-size: 2rem;
+            color: #61dafb;
+            text-shadow: 0 0 5px #61dafb, 0 0 10px #61dafb, 0 0 15px #61dafb, 0 0 20px #61dafb;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #61dafb, 0 0 10px #61dafb, 0 0 15px #61dafb, 0 0 20px #61dafb;
+            }
+            to {
+                text-shadow: 0 0 10px #61dafb, 0 0 20px #61dafb, 0 0 30px #61dafb, 0 0 40px #61dafb;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+    </div>
     <div class="container">
         <div class="text-content">
             <img src="https://paceeducation.com/website/student/iiss//images/school_logo.png" alt="School Logo" class="school-logo">
-            <h1>About Me</h1>
-            <p>My name is Suman</p>
-            <p>I am a student</p>
-            <p>I study at Indian International School</p>
+            <h1 class="glow-text">About Me</h1>
+            <p class="fadeIn">My name is Suman</p>
+            <p class="fadeIn">I am a student</p>
+            <p class="fadeIn">I study at Indian International School</p>
         </div>
         <div class="image-container">
             <img src="https://paceeducation.com/schools/ERP/SCHOOL_RELATED_PHOTOS_IIS/STUD_PHOTOS/19995.jpg?id=179752865" alt="Suman's photo">
         </div>
     </div>
-       <a href="gallery.html">Gallery</a>
-
     <script src="scripts.js"></script>
 </body>
 </html>
