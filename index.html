@@ -164,7 +164,7 @@
                 loginButton.textContent = 'Login with Google';
                 loginButton.addEventListener('click', () => {
                     const provider = new GoogleAuthProvider();
-                    auth.signInWithPopup(provider);
+                    signInWithPopup(auth, provider); // Correct usage of signInWithPopup
                 });
                 authButtonsContainer.appendChild(loginButton);
             }
@@ -180,3 +180,4 @@
     </script>
 </body>
 </html>
+
