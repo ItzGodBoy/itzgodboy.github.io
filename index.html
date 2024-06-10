@@ -6,7 +6,7 @@
     <title>About Suman</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
     <style>
-        /* Your existing CSS */
+        /* Your CSS styles */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -22,7 +22,7 @@
             color: #fff;
             padding: 15px 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end; /* Align items to the right */
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: sticky;
@@ -30,14 +30,15 @@
             z-index: 1000;
         }
 
-        .nav-bar a {
+        .nav-bar a, .nav-bar button {
             color: #fff;
             text-decoration: none;
             padding: 10px 20px;
             transition: background-color 0.3s ease;
+            margin-left: 10px; /* Add some space between buttons */
         }
 
-        .nav-bar a:hover {
+        .nav-bar a:hover, .nav-bar button:hover {
             background-color: #555;
         }
 
@@ -107,9 +108,7 @@
 </head>
 <body>
     <div class="nav-bar">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="gallery.html">Gallery</a>
+        <div id="auth-buttons"></div> <!-- This div will hold the authentication buttons -->
     </div>
     <div class="container">
         <div class="text-content">
@@ -122,12 +121,9 @@
         <div class="image-container">
             <img src="https://paceeducation.com/schools/ERP/SCHOOL_RELATED_PHOTOS_IIS/STUD_PHOTOS/19995.jpg?id=179752865" alt="Suman's photo">
         </div>
-        <button id="google-sign-in">Sign in with Google</button>
     </div>
 
     <!-- Firebase SDKs -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
@@ -147,39 +143,39 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Debugging: Log to verify Firebase initialization
-        console.log("Firebase initialized", app);
+        // Reference to the auth buttons container
+        const authButtonsContainer = document.getElementById('auth-buttons');
 
-        // Reference to the sign-in button
-        const googleSignInButton = document.getElementById('google-sign-in');
+        // Function to render authentication buttons
+        function renderAuthButtons(user) {
+            authButtonsContainer.innerHTML = ''; // Clear existing content
 
-        // Check if the button is correctly referenced
-        console.log("Sign-in button:", googleSignInButton);
-
-        // Add click event to the sign-in button
-        googleSignInButton.addEventListener('click', () => {
-            console.log("Sign-in button clicked");
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    // User signed in
-                    const user = result.user;
-                    console.log('User signed in:', user);
-                    // You can now use user information and display it on your website
-                })
-                .catch((error) => {
-                    console.error('Error during sign-in:', error);
-                });
-        });
-
-        // Optional: Add an observer to get user state changes
-        onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log('User is signed in:', user);
-                // Display user information or redirect to another page
+                // If user is signed in, show logout option
+                const logoutButton = document.createElement('button');
+                logoutButton.textContent = 'Logout';
+                logoutButton.addEventListener('click', () => {
+                    auth.signOut();
+                });
+                authButtonsContainer.appendChild(logoutButton);
             } else {
-                console.log('No user is signed in.');
+                // If user is not signed in, show login with Google option
+                const loginButton = document.createElement('button');
+                loginButton.textContent = 'Login with Google';
+                loginButton.addEventListener('click', () => {
+                    const provider = new GoogleAuthProvider();
+                    auth.signInWithPopup(provider);
+                });
+                authButtonsContainer.appendChild(loginButton);
             }
+        }
+
+        // Update authentication buttons on initial load
+        auth.onAuthStateChanged(renderAuthButtons);
+
+        // Optional: Add an observer to update authentication buttons when user state changes
+        auth.onAuthStateChanged((user) => {
+            renderAuthButtons(user);
         });
     </script>
 </body>
