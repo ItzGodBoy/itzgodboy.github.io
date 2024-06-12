@@ -42,6 +42,12 @@
             background-color: #555;
         }
 
+        .nav-bar button {
+            background-color: #000; /* Set button background color to black */
+            border: none;
+            cursor: pointer;
+        }
+
         .container {
             display: flex;
             flex-direction: column;
@@ -108,6 +114,9 @@
 </head>
 <body>
     <div class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
         <div id="auth-buttons"></div> <!-- This div will hold the authentication buttons -->
     </div>
     <div class="container">
@@ -171,13 +180,7 @@
         }
 
         // Update authentication buttons on initial load
-        auth.onAuthStateChanged(renderAuthButtons);
-
-        // Optional: Add an observer to update authentication buttons when user state changes
-        auth.onAuthStateChanged((user) => {
-            renderAuthButtons(user);
-        });
+        onAuthStateChanged(auth, renderAuthButtons);
     </script>
 </body>
 </html>
-
