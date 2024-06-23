@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Try and Learn CSS</title>
+
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            margin-top: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ff5e78;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            transition: color 0.3s ease;
+        }
+
+        h1:hover {
+            color: #03c4a1;
+        }
+
+        hr {
+            border: 2px solid #ff5e78;
+            margin: 10px 0;
+        }
+
+        main {
+            text-align: center;
+            margin: 20px;
+        }
+
+        img {
+            margin-bottom: 20px;
+            width: 120px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .game-link {
+            margin: 15px 0;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #3498db;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #ff5e78;
+        }
+
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Check out the games</h1>
+        <hr>
+    </header>
+
+    <main>
+        <img src="ohio.png" alt="Game controller" title="Spin me!">
+        <p>If you want to play some games, check these out!</p>
+
+        <section class="game-link">
+            <h2><a href="Holy.html">🍪 Cookie game!</a></h2>
+        </section>
+
+        <section class="game-link">
+            <h2><a href="redball.html">⚽ Move The Balls! <span class="warning">WARNING!!</span></a></h2>
+        </section>
+
+        <section class="game-link">
+            <h2><a href="index-copy.html">🐦 Flappy bird game!</a></h2>
+        </section>
+
+        <section class="game-link">
+            <h2><a href="CheckYourInternetSpeed.html">👇Check Your Internet!</a></h2>
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+
+
 
