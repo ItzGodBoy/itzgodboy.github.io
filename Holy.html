@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            margin: 0;
+            user-select: none; /* Disable text selection */
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        label {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* Styled Timer Selection Dropdown */
+        #timer-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #timer-select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        #cookie-container {
+            position: relative;
+        }
+
+        
+
+        #cookie {
+            width: 200px;
+            height: 200px;
+            background-image: url('./Chocolate-Chip-Cookie-Photo-1-480x480-removebg-preview.png');
+            background-size: cover;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+          
+        }
+
+        #cookie:hover {
+            transform: scale(1.1);
+        }
+
+        #score {
+            font-size: 25px;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        #timer-container {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #timer-display {
+            font-size: 36px;
+            color: #777;
+            margin-right: 10px;
+        }
+
+        #timer-unit {
+            font-size: 20px;
+            color: #777;
+        }
+
+        #start-button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #start-button:disabled {
+            background-color: #ddd;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        #start-button:hover:disabled {
+            background-color: #ddd;
+        }
+
+        #start-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Congratulations Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .close-button:hover {
+            background-color: #45a049;
+        }
+
+        /* New style for displaying timer duration in modal */
+        #modal-timer-info {
+            font-size: 16px;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cookie Clicker Game</h1>
+
+    <!-- Timer Selection Dropdown -->
+    <label for="timer-select">Select Timer:</label>
+    <select id="timer-select">
+        <option value="10">10s</option>
+        <option value="20">20s</option>
+        <option value="60">1m</option>
+        <option value="300">5m</option>
+    </select>
+
+    <!-- Cookie Container -->
+    <div id="cookie-container">
+        <!-- Disable the cookie div initially -->
+        <div id="cookie" style="pointer-events: none;"></div>
+    </div>
+
+    <!-- Score Display -->
+    <div id="score">Cookies: <span id="cookie-count">0</span></div>
+
+    <!-- Timer Display -->
+    <div id="timer-container">
+        <div id="timer-display">00:00</div>
+        <div id="timer-unit">Remaining Time</div>
+    </div>
+
+    <!-- Start Button -->
+    <button id="start-button">Start</button>
+
+    <!-- Congratulations Modal -->
+    <div id="congratulations-modal" class="modal">
+        <div class="modal-content">
+            <h2>Congratulations!</h2>
+            <p>You completed the game. Cookies: <span id="modal-cookie-count">0</span></p>
+            <!-- Display the selected timer duration -->
+            <p id="modal-timer-info">Timer Duration: <span id="modal-timer-duration">0s</span></p>
+            <button class="close-button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const cookieContainer = document.getElementById("cookie-container");
+        const cookie = document.getElementById("cookie");
+        const scoreDisplay = document.getElementById("cookie-count");
+        const startButton = document.getElementById("start-button");
+        const timerSelect = document.getElementById("timer-select");
+        const timerDisplay = document.getElementById("timer-display");
+        const timerUnit = document.getElementById("timer-unit");
+        const modal = document.getElementById("congratulations-modal");
+        const modalCookieCount = document.getElementById("modal-cookie-count");
+        const modalTimerDuration = document.getElementById("modal-timer-duration"); // New element
+        let cookies = 0;
+        let timer;
+
+        // Event listener for clicking the cookie
+        cookie.addEventListener("click", () => {
+            cookies++;
+            scoreDisplay.innerText = cookies;
+        });
+
+        // Event listener for clicking the start button
+        startButton.addEventListener("click", () => {
+            const selectedTime = parseInt(timerSelect.value, 10);
+            startGame(selectedTime);
+        });
+
+        // Function to start the game
+        function startGame(seconds) {
+            // Disable the start button and timer selection during the game
+            startButton.disabled = true;
+            timerSelect.disabled = true;
+
+            // Enable the cookie div
+            cookie.style.pointerEvents = "auto";
+
+            // Start the timer
+            startTimer(seconds);
+        }
+
+        // Function to start the timer
+        function startTimer(seconds) {
+            clearInterval(timer); // Clear any existing timer
+
+            let time = seconds;
+
+            // Initial display of the timer
+            updateTimerDisplay(time);
+
+            // Set up the interval to update the timer
+            timer = setInterval(() => {
+                time--;
+                updateTimerDisplay(time);
+
+                if (time <= 0) {
+                    clearInterval(timer);
+                    openModal();
+                    resetGame();
+                }
+            }, 1000);
+        }
+
+        // Function to update the timer display
+        function updateTimerDisplay(time) {
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            timerDisplay.innerText = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        // Function to show congratulations modal
+        function openModal() {
+            modal.style.display = "flex";
+            modalCookieCount.innerText = cookies;
+            modalTimerDuration.innerText = `${timerSelect.value}s`; // Set the timer duration in the modal
+        }
+
+        // Function to close congratulations modal
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // Function to reset the game
+        function resetGame() {
+            // Enable the start button and timer selection after the game
+            startButton.disabled = false;
+            timerSelect.disabled = false;
+
+            // Disable the cookie div
+            cookie.style.pointerEvents = "none";
+
+            cookies = 0;
+            scoreDisplay.innerText = cookies;
+        }
+    </script>
+</body>
+</html>
+

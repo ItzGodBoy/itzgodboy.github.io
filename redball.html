@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Ball with Joystick</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black; /* Set the background color to black */
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Ball properties
+        let ballX = canvas.width / 2;
+        let ballY = canvas.height / 2;
+        const ballRadius = 50;
+
+        // Joystick properties
+        const joystick = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 50,
+        };
+
+        function drawRedBall(x, y, radius) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        }
+
+        function drawJoystick(x, y, radius) {
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        function updateJoystick(event) {
+            joystick.x = event.clientX;
+            joystick.y = event.clientY;
+        }
+
+        function update() {
+            // Update the ball position based on the joystick
+            ballX += (joystick.x - ballX) * 0.05;
+            ballY += (joystick.y - ballY) * 0.05;
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the red ball and joystick
+            drawRedBall(ballX, ballY, ballRadius);
+            drawJoystick(joystick.x, joystick.y, joystick.radius);
+
+            // Request the next animation frame
+            requestAnimationFrame(update);
+        }
+
+        // Attach mousemove event to update joystick position
+        canvas.addEventListener('mousemove', updateJoystick);
+
+        // Start the animation loop
+        update();
+    </script>
+</body>
+</html>
