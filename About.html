@@ -2,28 +2,264 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Link Generator</title>
+  <title>Student Photo Viewer - Savage Mode</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    input, button { padding: 10px; margin: 5px; }
-    a { display: block; margin-top: 10px; color: blue; text-decoration: underline; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #000428, #004e92);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .light-mode {
+      background: #fff;
+      color: #000;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 90%;
+      max-width: 450px;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      margin-top: 20px;
+      outline: none;
+      text-align: center;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+    }
+    img {
+      margin-top: 25px;
+      max-width: 100%;
+      border-radius: 12px;
+      border: 3px solid white;
+      display: none;
+    }
+    #errorText {
+      margin-top: 15px;
+      color: #ff7070;
+      font-weight: bold;
+    }
+    #spinner {
+      margin-top: 20px;
+      display: none;
+    }
+    .loader {
+      border: 5px solid rgba(255, 255, 255, 0.2);
+      border-top: 5px solid white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #00c851;
+      padding: 12px 20px;
+      border-radius: 10px;
+      color: white;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    #downloadBtn {
+      margin-top: 15px;
+      display: none;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+    }
+    #downloadBtn:hover {
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+    }
+    #roastText {
+      margin-top: 20px;
+      color: #ffcccb;
+      font-style: italic;
+      font-size: 15px;
+    }
+    #roastPopup {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff4444;
+      padding: 15px;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      display: none;
+      z-index: 999;
+      cursor: pointer;
+      animation: popupShow 0.5s ease-in-out;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+      width: auto;
+    }
+    @keyframes popupShow {
+      from { transform: translateX(-50%) scale(0); opacity: 0; }
+      to { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
+    .modeSwitch {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px;
+      background: #ff4b2b;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
   </style>
 </head>
 <body>
-  <h2>Photo Link Generator</h2>
-  <input type="text" id="idInput" placeholder="Enter your ID (like 19995)">
-  <button onclick="generateLink()">Generate Link</button>
-  <a id="generatedLink" href="#" target="_blank"></a>
+
+  <button class="modeSwitch" onclick="toggleMode()">🌙</button>
+
+  <div class="card">
+    <h2>👁️‍🗨️ Student Photo Viewer</h2>
+    <input type="text" id="idInput" placeholder="Enter Student ID (e.g. 19995)">
+    <button onclick="generateImage()">Show Photo</button>
+
+    <div id="spinner"><div class="loader"></div></div>
+
+    <p id="errorText"></p>
+    <img id="studentImage" alt="Student Photo">
+    <button id="downloadBtn" onclick="downloadImage()">Download Photo</button>
+    <p id="roastText"></p>
+  </div>
+
+  <div id="toast" class="toast">Image Loaded!</div>
+  <div id="roastPopup"></div>
 
   <script>
-    function generateLink() {
+    let searchCount = 0;
+    const roastLines = [
+      "Bitch whom tf you tryin' to stalk huh? 😭",
+      "Calm down FBI agent, they ain't that famous 💀",
+      "You tryna find your crush or their whole bloodline? 💅",
+      "You need help, not photos 💔",
+      "That ID got more attention than your grades 💀",
+      "You out here clicking like it's Tinder for school photos 😭",
+      "Do you need a therapist after this? 💀",
+      "Bro, you're literally stalking the entire school 💀",
+      "Who you think you are, Sherlock Holmes? 😂"
+    ];
+
+    function showToast(message, color = "#00c851") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.background = color;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function generateImage() {
       const id = document.getElementById("idInput").value.trim();
-      if (!id) return alert("Bro type something fr 😭");
-      const baseUrl = "https://paceeducation.com/schools/ERP/SCHOOL_RELATED_PHOTOS_IIS/STUD_PHOTOS/";
-      const fullUrl = `${baseUrl}${id}.jpg?id=246567259`;
-      const linkElement = document.getElementById("generatedLink");
-      linkElement.href = fullUrl;
-      linkElement.textContent = fullUrl;
+      const img = document.getElementById("studentImage");
+      const errorText = document.getElementById("errorText");
+      const spinner = document.getElementById("spinner");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const roastText = document.getElementById("roastText");
+
+      img.style.display = "none";
+      downloadBtn.style.display = "none";
+      roastText.textContent = "";
+      errorText.textContent = "";
+
+      if (!id) {
+        errorText.textContent = "Bro type an ID first 💀";
+        return;
+      }
+
+      const url = `https://paceeducation.com/schools/ERP/SCHOOL_RELATED_PHOTOS_IIS/STUD_PHOTOS/${id}.jpg?id=246567259`;
+
+      spinner.style.display = "block";
+      const tempImg = new Image();
+      tempImg.onload = function () {
+        spinner.style.display = "none";
+        img.src = url;
+        img.style.display = "block";
+        downloadBtn.style.display = "inline-block";
+        showToast("Image Loaded! 🔥");
+
+        searchCount++;
+        if (searchCount >= 2) {
+          const roast = roastLines[Math.floor(Math.random() * roastLines.length)];
+          showRoastPopup(roast);
+        }
+      };
+      tempImg.onerror = function () {
+        spinner.style.display = "none";
+        errorText.textContent = "Bruh... no image found with that ID 💀";
+        showToast("Image not found!", "#ff4444");
+      };
+      tempImg.src = url;
+    }
+
+    function downloadImage() {
+      const img = document.getElementById("studentImage");
+      const link = document.createElement("a");
+      link.href = img.src;
+      link.download = "student_photo.jpg";
+      link.click();
+      showToast("Photo downloaded! 📥");
+    }
+
+    function showRoastPopup(roast) {
+      const roastPopup = document.getElementById("roastPopup");
+      roastPopup.textContent = roast;
+      roastPopup.style.display = "block";
+      setTimeout(() => {
+        roastPopup.style.display = "none";
+      }, 10000); // Popup stays for 10 seconds
+
+      // Dismiss the popup when clicked
+      roastPopup.onclick = function () {
+        roastPopup.style.display = "none";
+      };
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("light-mode");
     }
   </script>
 </body>
