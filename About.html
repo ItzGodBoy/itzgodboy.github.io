@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Link Generator</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, button { padding: 10px; margin: 5px; }
+    a { display: block; margin-top: 10px; color: blue; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h2>Photo Link Generator</h2>
+  <input type="text" id="idInput" placeholder="Enter your ID (like 19995)">
+  <button onclick="generateLink()">Generate Link</button>
+  <a id="generatedLink" href="#" target="_blank"></a>
+
+  <script>
+    function generateLink() {
+      const id = document.getElementById("idInput").value.trim();
+      if (!id) return alert("Bro type something fr 😭");
+      const baseUrl = "https://paceeducation.com/schools/ERP/SCHOOL_RELATED_PHOTOS_IIS/STUD_PHOTOS/";
+      const fullUrl = `${baseUrl}${id}.jpg?id=246567259`;
+      const linkElement = document.getElementById("generatedLink");
+      linkElement.href = fullUrl;
+      linkElement.textContent = fullUrl;
+    }
+  </script>
+</body>
+</html>
